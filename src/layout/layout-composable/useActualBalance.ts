@@ -12,18 +12,18 @@ const resetValues = (): void => {
 
 export const useLoadActualBalance = (): typeUseLoadActualBalance => {
   resetValues()
-  // consumeAuthenticatedAPI<ActualBalanceResponse>(`getActualBalance`)
-  //   .then((response) => {
-  //     if (response.responseMessage == 'success') {
-  //       actualBalance.value = response.data.balanceCommerce
-  //     } else {
-  //       actualBalance.value = '*****'
-  //     }
-  //     isLoading.value = false
-  //   })
-  //   .catch((error) => {
-  //     console.log(error)
-  //   })
+  consumeAuthenticatedAPI<ActualBalanceResponse>(`getActualBalance`)
+    .then((response) => {
+      if (response.responseMessage == 'success') {
+        actualBalance.value = response.data.balanceCommerce
+      } else {
+        actualBalance.value = '*****'
+      }
+      isLoading.value = false
+    })
+    .catch((error) => {
+      console.log(error)
+    })
   return {
     isLoading: computed(() => isLoading.value),
     actualBalance: computed(() => actualBalance.value)

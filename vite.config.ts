@@ -5,6 +5,22 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  
+  server: {
+    proxy: {
+      '/getProviders': {
+        target: 'http://bun-burn-env.eba-ftyx2m3h.us-east-1.elasticbeanstalk.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/getProviders/, ''), // Elimina '/getProviders' de la ruta
+      },
+      '/getActualBalance': {
+        target: 'http://bun-burn-env.eba-ftyx2m3h.us-east-1.elasticbeanstalk.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/getActualBalance/, ''), // Elimina '/getActualBalance' de la ruta
+      },
+    },
+  },  
+  // Resto de la configuración de Vite
   base: '/prueba-culqui-pwa/',
   plugins: [
     VitePWA({ 
