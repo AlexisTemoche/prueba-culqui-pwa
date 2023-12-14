@@ -1,16 +1,10 @@
-// service-worker.js
 
-// Nombre del caché
-const cacheName = 'mi-cache-v1';
-
-// Recursos a ser almacenados en caché
+const cacheName = 'cache-culqui-recargas-pagos';
 const cacheAssets = [
   '/assets',
   '/index.html',
-  // ...agrega aquí otros recursos que desees cachear
 ];
 
-// Instalación del service worker
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(cacheName).then((cache) => {
@@ -19,7 +13,6 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Activación del service worker y limpieza de cachés antiguos
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -34,7 +27,6 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Estrategia de caché para responder a las solicitudes
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
