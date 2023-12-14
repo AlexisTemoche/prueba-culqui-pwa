@@ -7,11 +7,13 @@ export default defineConfig({
   base: '/prueba-culqui-pwa/',
   plugins: [
     VitePWA({ 
+      injectRegister: 'script',
       registerType: 'autoUpdate',
+      devOptions: {
+        enabled: true
+      },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-        clientsClaim: true,
-        skipWaiting: true
       },
       manifest: {
         name: 'My Culqui App',

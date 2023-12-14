@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/prueba-culqui-pwa/dev-sw.js?dev-sw', { scope: '/prueba-culqui-pwa/', type: 'classic' })
