@@ -12,7 +12,6 @@ const cacheAssets = [
 
 // Instalación del service worker
 self.addEventListener('install', (event) => {
-    console.log("install => ", event);
   event.waitUntil(
     caches.open(cacheName).then((cache) => {
       return cache.addAll(cacheAssets);
@@ -22,7 +21,6 @@ self.addEventListener('install', (event) => {
 
 // Activación del service worker y limpieza de cachés antiguos
 self.addEventListener('activate', (event) => {
-    console.log("activate => ", event);
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -38,7 +36,6 @@ self.addEventListener('activate', (event) => {
 
 // Estrategia de caché para responder a las solicitudes
 self.addEventListener('fetch', (event) => {
-    console.log("fetch => ", event);
   event.respondWith(
     caches.match(event.request).then((response) => {
       return response || fetch(event.request);
