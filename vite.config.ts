@@ -8,15 +8,15 @@ export default defineConfig({
   
   server: {
     proxy: {
-      '/getProviders': {
-        target: 'http://bun-burn-env.eba-ftyx2m3h.us-east-1.elasticbeanstalk.com',
+      'getProviders': {
+        target: 'http://bun-burn-env.eba-ftyx2m3h.us-east-1.elasticbeanstalk.com/123',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/getProviders/, ''), // Elimina '/getProviders' de la ruta
+        rewrite: (path) => path,
       },
-      '/getActualBalance': {
-        target: 'http://bun-burn-env.eba-ftyx2m3h.us-east-1.elasticbeanstalk.com',
+      'getActualBalance': {
+        target: 'http://bun-burn-env.eba-ftyx2m3h.us-east-1.elasticbeanstalk.com/getActualBalance',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/getActualBalance/, ''), // Elimina '/getActualBalance' de la ruta
+        rewrite: (path) => path,
       },
     },
   },  
