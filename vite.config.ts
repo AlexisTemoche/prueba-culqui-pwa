@@ -10,8 +10,27 @@ export default defineConfig({
     VitePWA({ 
       registerType: 'autoUpdate',
       workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         clientsClaim: true,
         skipWaiting: true
+      },
+      manifest: {
+        name: 'My Culqui App',
+        short_name: 'CulquiApp',
+        description: 'My culqui App is a technical test',
+        theme_color: '#000000',
+        icons: [
+          {
+            src: 'logo_black.png',
+            sizes: '118x36',
+            type: 'svg'
+          },
+          {
+            src: 'logo_white.png',
+            sizes: '118x36',
+            type: 'svg'
+          }
+        ]
       }
     }),
     vue(),
