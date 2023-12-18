@@ -1,36 +1,27 @@
-import { ref, computed } from 'vue'
-import { consumeAuthenticatedAPI, cancelRequest } from '@/api/consumeAuthenticatedAPI'
-import type { ActualBalanceResponse, typeUseLoadActualBalance } from './actual.Balance.interface'
+import { computed } from 'vue'
+import type { ActualBalanceResponse } from './actual.Balance.interface'
+import { ApiClient } from '@/api/consumeAuthenticatedAPI'
+import { useQuery } from '@tanstack/vue-query'
 
-const isLoading = ref<Boolean>(true)
-const actualBalance = ref<String>('')
+const apiRecharges = new ApiClient();
 
-const resetValues = (): void => {
-  isLoading.value = true
-  actualBalance.value = ''
-}
+export const useLoadActualBalance = (): any => {
 
-export const useLoadActualBalance = (): typeUseLoadActualBalance => {
-  resetValues()
-  consumeAuthenticatedAPI<ActualBalanceResponse>(`getActualBalance`)
-    .then((response) => {
-      if (response.responseMessage == 'success') {
-        actualBalance.value = response.data.balanceCommerce
-      } else {
-        actualBalance.value = '*****'
-      }
-      isLoading.value = false
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+
+  const fetchGroups = (): Promise<ActualBalanceResponse> => apiRecharges.get<ActualBalanceResponse>('/getActualBalance')
+  const { data, refetch, isFetching  } = useQuery({
+    queryKey: ['/getActualBalance'],
+    queryFn: fetchGroups,
+    networkMode: 'offlineFirst'
+  })
+    
   return {
-    isLoading: computed(() => isLoading.value),
-    actualBalance: computed(() => actualBalance.value)
+    isLoading: computed( () => isFetching.value  ),
+    actualBalance: computed( () =>  data.value ? data.value.data.balanceCommerce:''  ),
+    refetch,
   }
 }
 
-export const useFinalizeActualDashboardProcess = (): void => {
-  resetValues()
-  cancelRequest()
+export const useFinalizeActualDashboardProcess =  ():void => {
+  apiRecharges.cancelRequest()
 }

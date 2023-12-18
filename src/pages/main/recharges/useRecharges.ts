@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import type { ComputedRef } from 'vue'
-import { consumeAuthenticatedAPI, cancelRequest } from '@/api/consumeAuthenticatedAPI'
+import { ApiClient } from '@/api/consumeAuthenticatedAPI'
 import type { Company, ProvidersListResponse } from './recharges.interface'
 
 interface typeUseLoadProvidersList {
@@ -10,6 +10,7 @@ interface typeUseLoadProvidersList {
 
 const isLoading = ref<Boolean>(true)
 const listOfProviders = ref<Company[]>([])
+const apiActualBalance = new ApiClient();
 
 const resetValues = (): void => {
   isLoading.value = true
@@ -17,7 +18,8 @@ const resetValues = (): void => {
 }
 
 export const useLoadProvidersList = (): typeUseLoadProvidersList => {
-  consumeAuthenticatedAPI<ProvidersListResponse>(`getProviders`)
+  
+  apiActualBalance.get<ProvidersListResponse>('/getProviders')
     .then((response) => {
       if (response.responseMessage == 'success') {
         listOfProviders.value = response.data.companies.map((company: Company) => company)
@@ -38,5 +40,5 @@ export const useLoadProvidersList = (): typeUseLoadProvidersList => {
 
 export const useFinalizeRechargesProcess = (): void => {
   resetValues()
-  cancelRequest()
+  apiActualBalance.cancelRequest()
 }

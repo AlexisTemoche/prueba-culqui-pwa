@@ -4,13 +4,13 @@ import AppSidebar from './AppSidebar.vue'
 import AppNavbar from './AppNavbar.vue'
 import { routeLinks } from '@/router/menu'
 import DashboardComponent from '@/components/dashboard/DashboardComponent.vue'
-import { useRoute } from 'vue-router'
-import { storeToRefs } from 'pinia'
-import { useScreenWidthStore } from '@/stores/screen-size'
 import {
   useLoadActualBalance,
   useFinalizeActualDashboardProcess
 } from './layout-composable/useActualBalance'
+import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { useScreenWidthStore } from '@/stores/screen-size'
 
 const router = useRoute()
 const currentRoute = computed<string>(() => router.path)
@@ -20,8 +20,12 @@ const { screenWidth } = storeToRefs(screenWidthStore)
 const isSmallScreen = computed(() => screenWidth.value < 768)
 onBeforeUnmount(() => screenWidthStore.finalizeProcess)
 
-const { isLoading, actualBalance } = useLoadActualBalance()
-onBeforeUnmount(() => useFinalizeActualDashboardProcess())
+const { isLoading, actualBalance, refetch } = useLoadActualBalance();
+
+onBeforeUnmount( () => {
+  useFinalizeActualDashboardProcess()
+} )
+
 </script>
 
 <template>
@@ -33,7 +37,7 @@ onBeforeUnmount(() => useFinalizeActualDashboardProcess())
       :links="routeLinks"
       :isLoading="isLoading"
       :actualBalance="actualBalance"
-      :useLoadActualBalance="() => useLoadActualBalance()"
+      :useLoadActualBalance=" () => refetch() "
       class="row-span-2 hidden md:flex"
     />
     <AppNavbar :links="routeLinks" />
