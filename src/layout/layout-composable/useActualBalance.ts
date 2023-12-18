@@ -1,23 +1,29 @@
 import { computed } from 'vue'
+import type { ComputedRef } from 'vue'
 import type { ActualBalanceResponse } from './actual.Balance.interface'
 import { ApiClient } from '@/api/consumeAuthenticatedAPI'
 import { useQuery } from '@tanstack/vue-query'
 
 const apiRecharges = new ApiClient();
 
-export const useLoadActualBalance = (): any => {
+interface typeUseLoadActualBalance {
+  isLoading: ComputedRef<Boolean>
+  actualBalance: ComputedRef<String>
+  refetch: Function
+}
 
+export const useLoadActualBalance = (): typeUseLoadActualBalance => {
 
-  const fetchGroups = (): Promise<ActualBalanceResponse> => apiRecharges.get<ActualBalanceResponse>('/getActualBalance')
+  const fecthGetActualBalance = (): Promise<ActualBalanceResponse> => apiRecharges.get<ActualBalanceResponse>('/getActualBalance')
   const { data, refetch, isFetching  } = useQuery({
     queryKey: ['/getActualBalance'],
-    queryFn: fetchGroups,
+    queryFn: fecthGetActualBalance,
     networkMode: 'offlineFirst'
   })
     
   return {
     isLoading: computed( () => isFetching.value  ),
-    actualBalance: computed( () =>  data.value ? data.value.data.balanceCommerce:''  ),
+    actualBalance: computed( () =>  data.value ? data.value.data?.balanceCommerce:'*****'  ),
     refetch,
   }
 }
